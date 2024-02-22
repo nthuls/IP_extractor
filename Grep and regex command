@@ -44,4 +44,41 @@ This command does the following:
 - The first `grep "invalid user" auth.log` filters lines that contain the term "invalid user" from `auth.log`.
 - Then, `| grep -Po '\b(?!192\.168\.)(?!10\.)(?!172\.(1[6-9]|2[0-9]|3[0-1])\.)(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\b'` takes this filtered output and extracts IP addresses not in private ranges.
 
-By structuring the command this way, you're efficiently narrowing down the log entries to those that are specifically related to "invalid user" attempts and then applying your IP address pattern to those entries. This approach should give you a list of IP addresses associated with "invalid user" entries that don't fall within the specified private IP address ranges.
+By structuring the command this way, you're efficiently narrowing down the log entries to those that are specifically related to "invalid user" attempts and then applying your IP address pattern to those entries. 
+This approach should give you a list of IP addresses associated with "invalid user" entries that don't fall within the specified private IP address ranges.
+
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                                        HOW TO EXTRACT PIPE AND COUNT 
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+To achieve the goal of filtering out IP addresses associated with "invalid user" entries, extracting those not in private ranges, and then adding to a list only those IP addresses that appear more than three times, you can use a combination of `grep`, `awk`, `sort`, and `uniq` commands in a Unix/Linux shell. 
+Here’s a step-by-step breakdown of how you could accomplish this:
+
+1. **Filter and Extract IPs**: 
+    Use `grep` to extract lines containing "invalid user", then filter out IP addresses that don't fall within the specified private IP address ranges.
+2. **Sort the IP Addresses**: 
+    Pipe the output to `sort` to order the IP addresses, which is necessary for the next step.
+3. **Count Unique IP Addresses**: 
+    Use `uniq -c` to count occurrences of each IP address. This command prefixes lines by the number of occurrences.
+4. **Filter Based on Count**: 
+    Use `awk` to filter out IP addresses with a count of 3 or less.
+5. **Extract IPs**: 
+    Optionally, use `awk` again to get just the IP addresses without the count, if desired.
+
+Here's how you can put it all together:
+
+```sh
+grep "invalid user" auth.log | \
+grep -Po '\b(?!192\.168\.)(?!10\.)(?!172\.(1[6-9]|2[0-9]|3[0-1])\.)(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\b' | \
+sort | uniq -c | awk '$1 > 3 {print $2}'
+```
+
+This command sequence works as follows:
+- The first `grep` filters lines containing "invalid user".
+- The second `grep -Po` matches and outputs IP addresses not in specified private ranges.
+- `sort` sorts the IP addresses, a necessary step for `uniq` to work correctly.
+- `uniq -c` counts each unique line (IP address) and prefixes the count.
+- `awk '$1 > 3 {print $2}'` checks if the count (`$1`) is greater than 3, and if so, prints the IP address (`$2`).
+
+The final output will be a list of IP addresses (not in private ranges) associated with "invalid user" entries that appear more than three times in your `auth.log`. 
+This approach is efficient for processing log files and extracting relevant data based on specific criteria.
