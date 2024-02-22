@@ -28,3 +28,20 @@ The -o option makes grep output only the parts of the lines that match the patte
 Finally, replace filename with the name of the file you wish to search through. 
 If you're piping output from another command, simply omit the filename.
 
+
+To filter the IP addresses that are associated with the term "invalid user" from your `auth.log`, and given that you're already using a regex pattern to exclude certain IP ranges, you can chain your commands using pipes (`|`) to further filter the output. Here's how you can do it:
+
+1. Use the first `grep` command with `-P` and `-o` options to match and output IP addresses that are not in the specified private ranges.
+2. Pipe this output to another `grep` command to filter lines containing "invalid user".
+
+However, based on your current approach, adjusting it to directly search for lines with "invalid user" and then extracting IP addresses that don't belong to private ranges would be more efficient. Here's how you can adjust your command:
+
+```sh
+grep "invalid user" auth.log | grep -Po '\b(?!192\.168\.)(?!10\.)(?!172\.(1[6-9]|2[0-9]|3[0-1])\.)(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\b'
+```
+
+This command does the following:
+- The first `grep "invalid user" auth.log` filters lines that contain the term "invalid user" from `auth.log`.
+- Then, `| grep -Po '\b(?!192\.168\.)(?!10\.)(?!172\.(1[6-9]|2[0-9]|3[0-1])\.)(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\b'` takes this filtered output and extracts IP addresses not in private ranges.
+
+By structuring the command this way, you're efficiently narrowing down the log entries to those that are specifically related to "invalid user" attempts and then applying your IP address pattern to those entries. This approach should give you a list of IP addresses associated with "invalid user" entries that don't fall within the specified private IP address ranges.
