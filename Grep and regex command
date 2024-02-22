@@ -1,0 +1,30 @@
+Uisng grep and Regex to extract IPS 
+
+For scenarios where this regex doesn't work as expected due to limitations in the grep version or regex engine, consider using perl-compatible regular expressions with grep -P 
+(though note that -P is not supported in all grep versions):
+
+sh
+
+grep -Po '\b(?!192\.168\.)(?!10\.)(?!172\.(1[6-9]|2[0-9]|3[0-1])\.)(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\b' filename
+
+This uses Perl-compatible regular expressions, which support the negative lookahead assertions used in your pattern. 
+However, always test your regex to ensure it behaves as expected, especially with complex patterns and different tools.
+
+
+Using regular expressions (regex) with the grep command allows you to filter input based on complex patterns. 
+However, grep's default behavior supports basic regular expressions (BRE), and for extended patterns (like the one you've provided), you should use egrep (or grep -E), which supports Extended Regular Expressions (ERE).
+
+The regex you've provided is designed to match IP addresses that are not in private IP ranges. 
+To explain briefly, it looks for IP addresses that don't start with 192.168., 10., and 172. 
+(for the latter, only the ranges 172.16.x.x through 172.31.x.x are considered private).
+
+The regex can be seen below.
+################### STARTS HERE #################################################################
+\b(?!192\.168\.)(?!10\.)(?!172\.(1[6-9]|2[0-9]|3[0-1])\.)(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})\b
+################### ENDS HERE ###################################################################
+
+grep -E enables the use of Extended Regular Expressions.
+The -o option makes grep output only the parts of the lines that match the pattern, which is useful when you're looking for specific segments like IP addresses within a larger body of text.
+Finally, replace filename with the name of the file you wish to search through. 
+If you're piping output from another command, simply omit the filename.
+
