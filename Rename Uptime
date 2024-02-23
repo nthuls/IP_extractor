@@ -1,2 +1,42 @@
+What I did was:
+    1. Updated apple-touch-icon.png and favicon.svg to reflect new branding.
+    2. Added dynamic JavaScript to change the application's title for branding consistency.
+    3. Added a script to update the main logo to maintain brand identity across all elements of the application.
+
 THIS LINE IS SUPPOSED TO HELP YOU RENAME THE UPTIME KUMA LABEL: It should be used in the dir (/home/ubuntu/uptime-kuma/dist) in the index.html file
   <script>document.addEventListener('DOMContentLoaded', function() { var spanElement = document.querySelector('.fs-4.title'); if (spanElement) { spanElement.textContent = 'Nthulis Uptime'; } else { console.error('Span element not found'); } });</script>
+
+
+ALL CHANGES ARE TO BE MADE TO THAT FILE:
+The images refrenced in the code section below are images we placed in the same folder as the index.html file:
+The href attribute of the apple-touch-icon has been updated to point to a new PNG file.
+      <link rel="apple-touch-icon" sizes="180x180" href="/icon-new.png">
+This icon is used for Apple devices when the user adds the webpage to their home screen.
+
+
+The href attribute for the favicon has been changed to point to a new SVG file.
+      <link rel="icon" type="image/svg+xml" href="/icon-new.svg" />
+This icon is displayed in browser tabs and bookmarks.
+
+Description Meta Tag: A meta tag has been added to describe the content of the website.
+      <meta name="description" content="Nthulis Uptime Kuma monitoring tool" />
+
+The Title: We first changed it to match our new Uptime Kuma name as seen below
+    <title>Nthulis Uptime</title>
+
+Title Change Script: 
+  A JavaScript snippet has been added to dynamically change the text content of an element with the class fs-4 title to "Nthulis Uptime" after the DOM is loaded.
+    <script>document.addEventListener('DOMContentLoaded', function() { var spanElement = document.querySelector('.fs-4.title'); if (spanElement) { spanElement.textContent = 'Nthulis Uptime'; } else { console.error('Span element not found'); } });</script>
+  This might be used to update the title or name of the application dynamically.
+
+
+Logo Source Change Script: 
+  Another JavaScript snippet has been added to change the src attribute of an image element that is expected to have the class logo-selector.
+    <script>document.addEventListener('DOMContentLoaded', function() { var spanElement = document.querySelector('.fs-4.title'); if (spanElement) { spanElement.textContent = 'Nthulis Uptime'; } else { console.error('Span element not found'); } });</script>
+  This would update the image source of the logo after the page has loaded.
+
+SVG Object Data Change Script: 
+  An additional JavaScript snippet aims to update the data attribute of an <object> tag that uses /icon.svg as its data source.
+    <script>document.addEventListener('DOMContentLoaded', function() { var logoObject = document.querySelector('object[data="/icon.svg"]'); if (logoObject) { logoObject.data = '/icon-new.png'; } else { console.error('Logo object not found'); } });</script>
+  The data attribute is being updated to point to a PNG file, while the <object> tag typically embeds data such as SVG.(Kindly put an SVG)
+
