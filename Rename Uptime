@@ -1,0 +1,2 @@
+THIS LINE IS SUPPOSED TO HELP YOU RENAME THE UPTIME KUMA LABEL: It should be used in the dir (/home/ubuntu/uptime-kuma/dist) in the index.html file
+  <script>document.addEventListener('DOMContentLoaded', function() { var spanElement = document.querySelector('.fs-4.title'); if (spanElement) { spanElement.textContent = 'Nthulis Uptime'; } else { console.error('Span element not found'); } });</script>
