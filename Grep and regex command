@@ -1,3 +1,7 @@
+^(?!10\.|192\.168\.|172\.(1[6-9]|2[0-9]|3[0-1])\.).*
+
+This regex attempts to exclude IPs starting with 10., 192.168., and 172.16. through 172.31. by using a negative lookahead.
+
 Uisng grep and Regex to extract IPS 
 
 For scenarios where this regex doesn't work as expected due to limitations in the grep version or regex engine, consider using perl-compatible regular expressions with grep -P 
